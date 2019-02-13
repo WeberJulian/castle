@@ -1,5 +1,5 @@
 var hostelFectching = require("./getHostelList")
-var {loadHostels, updateHostels} = hostelFectching
+var { loadHostels, updateHostels } = hostelFectching
 
 async function startup(){
     hostels = await updateHostels()

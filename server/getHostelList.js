@@ -37,34 +37,9 @@ module.exports = {
             hotels = hotels.concat(await batchRequest(temp))
             sleep(250)
         }
-        fs.writeFileSync('hostels.json', JSON.stringify(hotels));
+        fs.writeFileSync('hostels.json', JSON.stringify(hotels, null, 2));
         return hotels
     }
-}
-
-async function updateHostels() {
-    console.log("Fetching the list of hostels...")
-    const options = {
-        uri: 'https://www.relaischateaux.com/us/site-map/etablissements',
-        transform: function (body) {
-            return cheerio.load(body);
-        }
-    }
-    let $ = await rp(options)
-    $("#countryF").first().remove()
-    var france = $("#countryF").first().html()
-    var links = france.split('"').filter(word => word.includes("https://www.relaischateaux.com/us/france/"));
-    var hotels = []
-
-    var i, j, temp, chunk = 5;
-    for (i = 0, j = links.length; i < j; i += chunk) {
-        console.log("Fetching each hostel details : " + Math.floor(i * 100 * 10 / links.length) / 10 + "%")
-        temp = links.slice(i, i + chunk);
-        hotels = hotels.concat(await batchRequest(temp))
-        sleep(250)
-    }
-    fs.writeFileSync('hostels.json', JSON.stringify(hotels));
-    return hotels
 }
 
 async function batchRequest(uris) {
