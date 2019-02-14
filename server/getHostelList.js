@@ -34,15 +34,45 @@ module.exports = {
         for (i = 0, j = links.length; i < j; i += chunk) {
             console.log("Fetching each hostel details : " + Math.floor(i * 100 * 10 / links.length) / 10 + "%")
             temp = links.slice(i, i + chunk);
-            hotels = hotels.concat(await batchRequest(temp))
-            sleep(250)
+            hotels = hotels.concat(await batchRequestHostels(temp))
+            sleep(150)
         }
         fs.writeFileSync('hostels.json', JSON.stringify(hotels, null, 2));
         return hotels
+    },
+    onlyMichelin: async function(hostels){
+        batchRequestAutocompletion(hostels)
     }
 }
 
-async function batchRequest(uris) {
+async function batchRequestAutocompletion(hotels) {
+    let res = []
+    var counter = 0
+    for (let i = 0; i < hotels.length; i++) {
+        res.push(fetch("https://restaurant.michelin.fr/index.php?q=search/autocomplete/" + encodeURI(hotels[i].name)))
+    }
+    for (let i = 0; i < hotels.length; i++) {
+        var response = await res[i]
+        response = (await response.json())
+        if (response.toString().includes("Aucun résultat.")){
+            console.log("pas michelin")
+        }
+        else{
+            response = await JSON.stringify(response)
+            if(response.includes("poi")){
+                console.log("michelin")
+                counter += 1
+            }
+            else{
+                console.log("BUG")
+            }
+        }
+    }
+    console.log(counter)
+    return hotels
+}
+
+async function batchRequestHostels(uris) {
     let res = []
     let hotels = []
     for (let i = 0; i < uris.length; i++) {
@@ -57,6 +87,7 @@ async function batchRequest(uris) {
     }
     for (let i = 0; i < uris.length; i++) {
         $ = await res[i]
+        let image = $(".hotelHeader-img").attr('data-src')
         var name = deleteSpaces($(".mainTitle2")["0"].children[0].data.split("\n")[1])
         name = he.decode(name)
         name = name.split(" – ")[0]
@@ -66,7 +97,7 @@ async function batchRequest(uris) {
         sleep(20)
         let entityId = await getEntityId(url[url.length - 1])
         if (entityId != null) {
-            hotels.push({ name: name, uri: uris[i], entityId: entityId })
+            hotels.push({ name: name, uri: uris[i], entityId: entityId, image: "https:"+image})
         }
     }
     return hotels
@@ -93,6 +124,7 @@ async function getEntityId(hostel) {
         return null
     }
 }
+
 
 function deleteSpaces(text) {
     while (text[0] == " ") {
