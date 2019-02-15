@@ -35,7 +35,6 @@ module.exports = {
             console.log("Fetching each hostel details : " + Math.floor(i * 100 * 10 / links.length) / 10 + "%")
             temp = links.slice(i, i + chunk);
             hotels = hotels.concat(await batchRequestHostels(temp))
-            //sleep(150)
         }
         fs.writeFileSync('hostels.json', JSON.stringify(hotels, null, 2));
         return hotels
@@ -117,7 +116,6 @@ async function michelin(hostels) {
     for (let i = 0; i < hostels.length; i++) {
         var response = await res[i]
         response = (await response.json())
-        //console.log(response)
         if (response.toString().includes("Aucun résultat.")) {
             trash.push(i)
         }
