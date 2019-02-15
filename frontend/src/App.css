@@ -1,5 +1,7 @@
 .App {
-  text-align: center;
+  background-color: #e0dfdf;
+  height: 100%;
+  width: 100%;
 }
 
 .App-logo {
@@ -17,6 +19,10 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+.ListContainer {
+  padding: 50
 }
 
 .App-link {
