@@ -92,7 +92,7 @@ class HostelCard extends Component {
         />
 
         <CardContent>
-          <Typography component="p">
+          <Typography component="p" variant="subtitle1">
             {hostel.citation}
           </Typography>
           <Typography variant="button" component="p" style={{marginTop: "15px"}}>

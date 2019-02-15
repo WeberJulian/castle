@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import hostels from "./hostels.json"
 import HostelCard from "./HostelCard"
 import Grid from '@material-ui/core/Grid';
+import NavBar from "./NavBar"
 import "./App.css"
 
 const ListContainer = {
@@ -22,8 +23,11 @@ class App extends Component {
   }
   render() {
     return (
-      <div style={ListContainer}>
-        <BuildList hostels={this.state.hostels}/>
+      <div>
+        <NavBar/>
+        <div style={ListContainer}>
+          <BuildList hostels={this.state.hostels}/>
+        </div>  
       </div>
     );
   }
