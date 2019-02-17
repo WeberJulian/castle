@@ -45,7 +45,11 @@ const styles = theme => ({
 });
 
 class HostelCard extends Component {
-  state = { expanded: false, anchorEl: null, };
+  state = { 
+    expanded: false, 
+    anchorEl: null, 
+    price: null,    
+  };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
@@ -77,8 +81,8 @@ class HostelCard extends Component {
                 open={Boolean(this.state.anchorEl)}
                 onClose={this.handleClose}
               >
-                <MenuItem onClick={()=>{window.location=hostel.uri;this.handleClose()}}>See on relaischateaux</MenuItem>
-                <MenuItem onClick={()=>{window.location=hostel.michelinUri;this.handleClose()}}>See on Michelin</MenuItem>
+                <MenuItem onClick={() => { window.location = hostel.uri; this.handleClose() }}>See on relaischateaux</MenuItem>
+                <MenuItem onClick={() => { window.location = hostel.michelinUri; this.handleClose() }}>See on Michelin</MenuItem>
               </Menu>
             </div>
           }
@@ -95,10 +99,10 @@ class HostelCard extends Component {
           <Typography component="p" variant="subtitle1">
             {hostel.citation}
           </Typography>
-          <Typography variant="button" component="p" style={{marginTop: "15px"}}>
-            Michelin's starring : <Starring nb={hostel.michelinStars}/>
+          <Typography variant="button" component="p" style={{ marginTop: "15px" }}>
+            Michelin's starring : <Starring nb={hostel.michelinStars} />
           </Typography>
-          
+
         </CardContent>
 
         <CardActions className={classes.actions} disableActionSpacing>
@@ -129,8 +133,8 @@ HostelCard.propTypes = {
 const Starring = (props) => {
   let nb = props.nb
   let stars = []
-  for (let i = 0; i < nb; i++){
-    stars.push(<img src={star} alt="Logo" width="30" style={{marginHorizontal: '5px'}}/>)
+  for (let i = 0; i < nb; i++) {
+    stars.push(<img src={star} alt="Logo" width="30" style={{ marginHorizontal: '5px' }} />)
   }
   return stars
 }

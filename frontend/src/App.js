@@ -15,19 +15,53 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      hostels: {}
+      hostels: {},
+      date: new Date(),
+      filtering: "name"
     }
   }
   componentWillMount() {
     this.setState({ hostels })
   }
+  updateFiltering(filtering) {
+    this.setState({ filtering })
+    this.filter(filtering)
+  }
+  filter(filtering) {
+    let hostels = [...this.state.hostels]
+    switch (filtering) {
+      case "name":
+        hostels.sort((a, b) => {
+          if (a.name.toLowerCase() > b.name.toLowerCase()) {
+            return 1
+          }
+          else {
+            return -1
+          }
+        })
+        break;
+      case "stars":
+        hostels.sort((a, b) => {
+          if (a.michelinStars > b.michelinStars) {
+            return -1
+          }
+          else {
+            return 1
+          }
+        })
+        break;
+      case "stars":
+        break;
+    }
+    this.setState({ hostels })
+  }
   render() {
     return (
       <div>
-        <NavBar/>
+        <NavBar updateFiltering={this.updateFiltering.bind(this)} />
         <div style={ListContainer}>
-          <BuildList hostels={this.state.hostels}/>
-        </div>  
+          <BuildList hostels={this.state.hostels} />
+        </div>
       </div>
     );
   }
@@ -39,8 +73,8 @@ export default App;
 const BuildList = (props) => {
   let hostels = props.hostels
   let list = []
-  for (let i = 0; i < hostels.length; i++){
-    if(hostels[i].michelinStars !== 0){
+  for (let i = 0; i < hostels.length; i++) {
+    if (hostels[i].michelinStars !== 0) {
       list.push(
         <Grid item xs={6} key={i}>
           <HostelCard hostel={hostels[i]} />
