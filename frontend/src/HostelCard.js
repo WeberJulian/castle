@@ -6,15 +6,15 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import CardMedia from '@material-ui/core/CardMedia';
 import Collapse from '@material-ui/core/Collapse';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 import star from './michelin_star.png';
+import Network from "./Network"
 
 const styles = theme => ({
   card: {
@@ -44,11 +44,37 @@ const styles = theme => ({
   }
 });
 
+const imageStyle = {
+  height: "100%",
+  width: "100%"
+}
+
+const imageContainer = {
+  position: "relative",
+  height: "250px",
+  width: "100%"
+}
+
+const priceContainer = {
+  backgroundColor: "green",
+  position: "absolute",
+  height: "50px",
+  width: "100px",
+  right: "20px",
+  bottom: "20px",
+  borderRadius: "10px",
+  color: "white",
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  fontWeight: 'bold',
+  fontSize: "21px"
+}
+
 class HostelCard extends Component {
   state = { 
     expanded: false, 
-    anchorEl: null, 
-    price: null,    
+    anchorEl: null,  
   };
 
   handleExpandClick = () => {
@@ -89,11 +115,11 @@ class HostelCard extends Component {
           title={hostel.name}
           subheader={hostel.location}
         />
-        <CardMedia
-          className={classes.media}
-          image={hostel.image}
-          title="Paella dish"
-        />
+        
+        <div style={imageContainer}>
+          <img src={hostel.image} style={imageStyle} alt={hostel.name}/>
+          <div style={priceContainer}>{hostel.price == null ? <CircularProgress color="inherit"/> : hostel.price + "$"}</div>
+        </div>
 
         <CardContent>
           <Typography component="p" variant="subtitle1">
@@ -119,7 +145,6 @@ class HostelCard extends Component {
           </CardContent>
         </Collapse>
 
-
       </Card>
     )
   }
@@ -134,7 +159,7 @@ const Starring = (props) => {
   let nb = props.nb
   let stars = []
   for (let i = 0; i < nb; i++) {
-    stars.push(<img src={star} alt="Logo" width="30" style={{ marginHorizontal: '5px' }} />)
+    stars.push(<img src={star} alt="Logo" width="30" style={{ marginHorizontal: '5px' }} key={i}/>)
   }
   return stars
 }

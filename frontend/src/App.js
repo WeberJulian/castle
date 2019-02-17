@@ -4,6 +4,7 @@ import HostelCard from "./HostelCard"
 import Grid from '@material-ui/core/Grid';
 import NavBar from "./NavBar"
 import "./App.css"
+import Network from './Network.js';
 
 const ListContainer = {
   width: '70%',
@@ -16,12 +17,13 @@ class App extends Component {
     super(props)
     this.state = {
       hostels: {},
-      date: new Date(),
+      day: new Date(),
       filtering: "name"
     }
   }
-  componentWillMount() {
-    this.setState({ hostels })
+  async componentWillMount() {
+    let newHostels = await Network.fetchPrices(hostels)
+    this.setState({ hostels:  newHostels})
   }
   updateFiltering(filtering) {
     this.setState({ filtering })
@@ -50,17 +52,33 @@ class App extends Component {
           }
         })
         break;
-      case "stars":
+      case "price":
+      hostels.sort((a, b) => {
+        if (a.price > b.price) {
+          return 1
+        }
+        else {
+          return -1
+        }
+      })
         break;
     }
     this.setState({ hostels })
   }
+
+  async onDayChange(day){
+    this.setState({day})
+    let newHostels = await Network.fetchPrices(hostels)
+    this.setState({ hostels:  newHostels})
+    this.filter(this.state.filtering)
+  }
+
   render() {
     return (
       <div>
-        <NavBar updateFiltering={this.updateFiltering.bind(this)} />
+        <NavBar updateFiltering={this.updateFiltering.bind(this)} onDayChange={this.onDayChange.bind(this)} />
         <div style={ListContainer}>
-          <BuildList hostels={this.state.hostels} />
+          <BuildList hostels={this.state.hostels} day={this.state.day}/>
         </div>
       </div>
     );
@@ -77,7 +95,7 @@ const BuildList = (props) => {
     if (hostels[i].michelinStars !== 0) {
       list.push(
         <Grid item xs={6} key={i}>
-          <HostelCard hostel={hostels[i]} />
+          <HostelCard hostel={hostels[i]} day={props.day} />
         </Grid>
       )
     }

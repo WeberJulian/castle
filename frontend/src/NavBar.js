@@ -64,7 +64,7 @@ export default class navBar extends Component {
                             <p style={{ marginRight: "10px" }}>Pick a Weekend :  </p>
                             <DayPickerInput initialMonth={new Date()}
                                 disabledDays={{ daysOfWeek: [1, 2, 3, 4, 5] }}
-                                onDayChange={day => console.log(day)} />
+                                onDayChange={day => this.props.onDayChange(day)} />
                         </div>
                     </Grid>
                     <Grid item xs={3} style={cell}>
