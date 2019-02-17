@@ -22,8 +22,8 @@ class App extends Component {
     }
   }
   async componentWillMount() {
-    let newHostels = await Network.fetchPrices(hostels)
-    this.setState({ hostels:  newHostels})
+    //let newHostels = await Network.fetchPrices(hostels)
+    this.setState({ hostels })
   }
   updateFiltering(filtering) {
     this.setState({ filtering })
@@ -54,7 +54,7 @@ class App extends Component {
         break;
       case "price":
       hostels.sort((a, b) => {
-        if (a.price > b.price) {
+        if (parseInt(a.price) > parseInt(b.price)) {
           return 1
         }
         else {
@@ -68,8 +68,8 @@ class App extends Component {
 
   async onDayChange(day){
     this.setState({day})
-    let newHostels = await Network.fetchPrices(hostels)
-    this.setState({ hostels:  newHostels})
+    //let newHostels = await Network.fetchPrices(hostels)
+    //this.setState({ hostels:  newHostels})
     this.filter(this.state.filtering)
   }
 

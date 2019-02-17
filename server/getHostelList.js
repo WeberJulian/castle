@@ -59,6 +59,7 @@ async function batchRequestHostels(uris) {
         $ = await res[i]
         let image = $(".hotelHeader-img").attr('data-src')
         let citation = $(".citationMsg").text()
+        let price = $(".price").text()
         let location = $("span [itemprop='addressLocality']").text()
         let description = deleteSpaces($(".richTextMargin").text().replace("\n", ""))
         var name = deleteSpaces($(".mainTitle2")["0"].children[0].data.split("\n")[1])
@@ -77,7 +78,8 @@ async function batchRequestHostels(uris) {
                 image: "https:" + image,
                 citation: citation,
                 location: location,
-                description: description
+                description: description,
+                price: price
             })
         }
     }

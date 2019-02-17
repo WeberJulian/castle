@@ -20,7 +20,7 @@ async function testRelais(){
         }
     }
     var $ = await rp(options)
-    console.log($(".richTextMargin").text())
+    console.log($(".price").text())
 }
 
 async function testMichelin(){
@@ -34,3 +34,4 @@ async function testMichelin(){
 
 startup()
 //testMichelin()
+//testRelais()
